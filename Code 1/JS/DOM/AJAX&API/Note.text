@@ -1,0 +1,52 @@
+284. Intro To AJAX
+
+- we can make request from code
+
+AJAX
+- Asynchronous JS and XML
+
+
+
+286. JSON
+
+- JSON - JavaScript object notation
+
+
+JSON is a format for sending data for serializing or for sending information from me to you or from an API to my browser
+
+JSON 
+- can use strings as the values, numbers, other objects and arrays 
+- use boolean
+- use null
+
+
+
+288. HTTP Verbs
+
+- GET - requests are a way of getting stuff from an API
+- POST - requests used when trying to send data somewhere, sending data is going to be saved somewhere or stored in database
+
+
+
+289. HTTP status codes
+
+- status codes that come back in an HTTP responses that mean something ( ex.404, 500, 200)
+- 200 - most common successful responses
+- 400 - most common client side error responses
+- 500 - most common server side error responses
+
+
+290. Understanding Query strings
+
+291. HTTP Headers
+
+-headers are additional way of passing information with a given request and with a responses
+
+
+292.Making XHRs
+
+XMLHttpRequest 
+- the "original" way of sending requests via JS.
+- does not support promises, so lots of callback
+
+

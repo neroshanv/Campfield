@@ -1,0 +1,111 @@
+when loading index.js use this line below:
+
+
+node -i -e "$(< index.js)"
+
+
+
+
+387. Our First Mongoose Model
+
+what is a schema?
+
+- mapping of different collection kets from Mongo to different types in JS
+
+388. Insert Many
+
+ex.
+Movie.insertMany([
+    { title: 'Amelie', year: 2001, score: 8.3, rating: 'R' },
+    { title: 'Alien', year: 1979, score: 8.1, rating: 'R' },
+    { title: 'The Iron Giant', year: 1999, score: 7.5, rating: 'PG' },
+    { title: 'Stand By Me', year: 1986, score: 8.6, rating: 'R' },
+    { title: 'Moonrise Kingdom', year: 2012, score: 7.3, rating: 'PG-13' }
+])
+
+
+389. Find with Mongoose
+//                  - calling the data (retrieve data)
+
+Find all movies:
+ex. Movie.find({}),then(data => console.log(data))
+
+
+Find movies that have rating of PG 13
+
+ex.
+
+Movie.find({rating: 'PG-13'}).then(data => console.log(date))
+
+
+Find recent movie so maybe greater than 2015
+
+ex.
+                    (greater than or equal)
+Movie.find({year : {$gte: 2015}}).then(data => console.log(data))
+
+
+396. Model Instance Methods
+
+- a way of defining or adding functionality onto the model in addition to whatever Mongoose already provides
+
+
+// arrow function won't work in this case, 
+ex. productSchema.methods.greet = function () {
+    console.log("HELLOOO")
+    // {this} represents findProduct
+    console.log(`- from${this.name}`)
+}
+
+const Product = mongoose.model('Product', productSchema)
+
+// access to it when i find a particular product
+const findProduct = async () => {
+    const foundProduct = await Product.findOne({ name: 'Bike Helmet'});
+    foundProduct.greet();
+}
+
+
+397. 
+
+- Static model
+
+- fancy way of finding things, updating things, creatings things, deleting things
+- usually built on top of existing model methods
+
+
+// this - defined as particular product in a static method, refers to the entire model
+ex. productSchema.statics.fireSale = function () {
+    return this.updateMany({}, { onSale: true, price: 0})
+}
+
+output: all products are on sale and priced at $0
+
+
+398. Mongoose Virtual
+
+- virtual eyes that give us ability to add properties to a schema that don't exist in the DB (database) itself but we have access to
+
+
+ex.
+
+const personSchema = new mongoose.Schema({
+    first: string,
+    last: string,
+})
+
+personSchema.virtual('fullName').get(function () {
+    return `${this.first} ${this.last}`
+})
+
+
+// model
+const Person = mongoose.model('Person', personSchema);
+
+
+
+399. Middleware
+
+- Mongoose gives us to run code before and after certain things are executed.
+- certain mongoose methods are called so i can run some code right before something is removed or something is saved. 
+- or any time we call, update many or find

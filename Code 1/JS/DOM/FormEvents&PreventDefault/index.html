@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>My Form</h1>
+    <!-- when this form is submitted, whatever data is included in the form is going to be submitted to this location-->
+    <!-- default action is moving to another page-->
+    <form action="/shelter" id="shelterForm">
+        <input type="text" id="catName" />
+        <button>Submit</button>
+    </form>
+    <!--how do we stay on the same page and we do something with the form data.-->
+    <!--    we do that with event prevent default-->
+    <!------------------------------------------------------------------------------------>
+    <!-- 1: append different cats to that list
+         2: figuring out just extracting the data out of input -->
+    <h2>Available Cats</h2>
+    <ul id="cats"></ul>
+
+
+
+    <script src="app.js"></script>
+</body>
+
+</html>

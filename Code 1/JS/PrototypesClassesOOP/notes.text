@@ -1,0 +1,17 @@
+298. Prototypes
+
+- oriented programming
+- we will cover things like constructor functions and classes, super keyword ingeritance
+- according to MDN, prototypes are the mechanism by which JS objects, inherent features from one another.
+- objects can have prototype object which acts as a template object
+
+
+
+ex. String.prototype.yell = function() {
+    return `OMG!!! ${this.toUpperCase()}!!!!! AGHGHAGH!`;
+};
+
+output: "i love you".yell()
+output: "OMG!!! I LOVE YOU!!!!! AGHGHAGH!"
+
+so .yell got replaced with "i love you"

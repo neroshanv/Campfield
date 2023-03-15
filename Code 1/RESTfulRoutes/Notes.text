@@ -1,0 +1,41 @@
+356. Get vs. POST requests
+
+GET request- used to retrieve or to get information
+    - data is sent via query string
+    - informaiton is plainly visible in URL
+    - limited amount of data can be sent
+
+
+POST request - used to post data to the server
+    - used to write/create/update
+    - data is sent via request body, not a query string!
+    - can send any sort of data(JSON!)
+
+
+
+359. Intro to REST
+
+- REPRESENTATIONAL STATE TRANSFER
+- basically set of guidelines for how a client + server should communicate and perfrom CRUD operations on a given resource
+
+- set of rules to follow for client server communcation 
+- ex. i can make a request from postman or browser
+
+- restful system has a uniform interface, consists of having some sort of consistent Eurail pattern matched with different http verbs
+
+
+ex. using comments as a resource
+
+NAME:      PATH:                VERB:           Purpose:
+Index      /comments            GET             Display all comments
+New        /comments/new        GET             Form to create new comments
+create     /comments            POST            Creates new comment on server
+Show       /comments/:id        GET             details for one specific comment
+Edit       /comments/:id/edit   GET             Form to edit specific comment
+update     /comments/:id        PATCH           Updates specific comment on server
+Destroy    /comments/:id        DELETE          Deletes specific item on server
+
+
+NOTE: PATCH AND DELETE will not work from browser using HTML form element unless you install npm i method-override
+
+method-override - pretends to run as post 

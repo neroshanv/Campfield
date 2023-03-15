@@ -1,0 +1,61 @@
+ What is Node
+
+ - technically it's a JS runtime.
+ - implementation of JS that runs outside of the browser
+ - we can run JS code without opening a browser
+
+
+
+ 319. what is Node used for
+
+ - web servers
+ - command line tools
+ - native apps( VScode is a Node app)
+ - video games
+ - drone software
+ 
+
+ 321. THe Node REPL
+
+ - we can type some code in it, read it, evaluate it, and then print something back
+
+
+ RUnning a script
+
+ - you need to be in the right directory
+ 
+
+ run -> node (filename)
+
+
+ 
+ 326. WOrking with module.exports
+
+ 335. Introducing Express
+
+ - express is a node package that is known for framework, helps us make web apps
+ - helps us get servers up and running with Node.
+ - start up a server to listen for requests
+ - parse incoming requests
+ - match those requests to particular routes
+ 
+- Express turns information into reuqets or it will turn requests into objects
+- helps us match those request so that we could write code that only runs when requesting 
+
+ what is a framework?
+ - code that we download using a tool like npm or script 
+ - framework are also code that other people have written.
+ - writing code according to how the framework works and following the rules
+ - help make apps very quickly
+
+ 
+ intversion of Control: a library is something you can integrate into your code at any point.
+ ex - Axios or ASCII art libraries
+  
+ 
+ 338. Express Routing Basics
+ - refers to taking incoming requests and a path that is requested and matching that to some code in some response.
+
+
+ 346. EJS Interpolation Syntax
+ - <%= 4 + 5 + 1 %> ---> JS code can be run in ejs file!!
