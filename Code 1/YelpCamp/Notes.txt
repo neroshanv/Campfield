@@ -1,0 +1,12 @@
+in Node:
+
+npm init -y
+
+npm i express mongoose ejs
+
+
+in mongodb:
+
+use yelp-camp
+
+npm i method-override
