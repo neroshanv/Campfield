@@ -54,6 +54,8 @@ app.use((req, res) => {
 })
 
 
+
+// 4 parameters, it is an error handling middleware. (err, req, res, next)
 // app.use((err, req, res, next) => {
 //     console.log("******************************************")
 //     console.log("*****************ERROR*****************")
