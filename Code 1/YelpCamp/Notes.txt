@@ -10,3 +10,16 @@ in mongodb:
 use yelp-camp
 
 npm i method-override
+
+
+----------------------------------------------------------------
+
+UPDATE:
+
+decided to pause the app and work on rest of the new content to finish the course, 
+
+Section 43, 45, 46, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59 to be completed 
+
+ALSO:
+
+section 29: 301-304 need to be completed
