@@ -1,2 +1,41 @@
 454. Introduction to Mongo Relationship
 
+461. Mongo Schema Design
+
+- setting up two models that are connected in some way
+- how do we take that and integrate that into an express app
+ or 
+- what are the implications of having these different relationships in an express app 
+
+
+-in Mongo, it makes sense, we can duplicate some data. 
+- normalization means we can duplicate some data
+
+
+Rules of Thumb: 
+
+1 - favor embedding unless there is a compelling reason not to
+
+- Step 1 is how you are going to be accessing this information?
+
+2 - needing to access an object on it's own is a complelling reason not to embed it
+
+
+3 - arrays should not grow without bound. if there are more than a couple of hundred documents on the "many" side, don't embed them;
+    if there are more than a few thousand documents on the "many" side,
+    don't use an array of ObjectID references.
+
+    - instead add the reference on the child side, on the many side, referencing the parent or the one
+    
+
+4 - don't be afraid of application-level joins: if you index correctly and use the projection specifier
+    then application-level joins are barely more expensive than server-side joins in a relational database
+
+
+5 - consider the write/read ratio when denormalizing. A field that will mostly be read and only seldom
+    updated is a good candidate for denormalization: if you denormalize a field that is updated frequently then the extra work of finding and updating
+    all the instances is liekly to overwhelm the savings that you get from denormalizing
+
+6 - as always with MongoDB, how you model your data depends - entirely - on your particular application's
+    data access patterns. You want to structure your data to match the ways that your application queries and updates it
+    

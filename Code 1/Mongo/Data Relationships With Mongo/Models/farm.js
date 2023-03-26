@@ -64,8 +64,13 @@ const addProduct = async () => {
 }
 
 
+// populate:
+// Mongoose is going to take the ID that has been stored in that array for, in our case, products IDs
+// and replace them with the corresponding products.
 
 
 Farm.findOne({ name: 'Full Belly Farms' })
     .populate('products')
     .then(farm => console.log(farm))
+
+
