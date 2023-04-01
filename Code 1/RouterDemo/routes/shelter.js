@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 // prefixed all of my routes from /shelters in index.js
-router.get('/', (req, res) = => {
+router.get('/', (req, res) => {
     res.send("ALL SHELTERS")
 })
 
