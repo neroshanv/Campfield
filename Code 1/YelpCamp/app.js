@@ -25,7 +25,7 @@ app.engine('egs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'view'))
 
-app.use(express.urlencoded({ extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
@@ -46,9 +46,13 @@ app.get('/campgrounds.new', (req, res) => {
 // end point where the form is submitted too
 // creation of campground
 app.post('/campgrounds', async (req, res) => {
-    const campground = new Campground(req.body.campground);
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`)
+    try {
+        const campground = new Campground(req.body.campground);
+        await campground.save();
+        res.redirect(`/campgrounds/${campground._id}`)
+    } catch (e) {
+        next(e);
+    }
 });
 
 // implement show route which is eventually going to be a details page for campground
@@ -66,7 +70,7 @@ app.get('/campgrounds/:id/edit', async (req, res) => {
 app.put('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     // find the id and update from edit.ejs as a whole
-    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     res.redirect(`/campgrounds/${campground.id}`)
 });
 
@@ -75,6 +79,11 @@ app.delete('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+})
+
+// catch error
+app.use((err, req, res, next) => {
+    res.send('oh boy, something went wrong')
 })
 
 app.listen(3000, () => {
