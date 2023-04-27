@@ -7,6 +7,9 @@ const ejsMate = require('ejs-mate');
 // catch error class
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
+// JOI Schema validate
+const { campgroundSchema } = require('./schemas.js')
+// -----------------------------------------------------
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 
@@ -31,6 +34,17 @@ app.set('views', path.join(__dirname, 'view'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+//  validation middleware
+const validateCampground = (req, res, next) => {
+    const { error } = campgroundSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home')
 });
@@ -48,8 +62,8 @@ app.get('/campgrounds.new', (req, res) => {
 
 // end point where the form is submitted too
 // creation of campground
-app.post('/campgrounds', catchAsync(async (req, res) => {
-    if (!req.body.campground) throw new ExpressError('Invaild Campground Data', 400);
+app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
+    // if (!req.body.campground) throw new ExpressError('Invaild Campground Data', 400);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
@@ -67,7 +81,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
 }))
 
 // sending a real post request that we are faking with methodOverride
-app.put('/campgrounds/:id', catchAsync(async (req, res) => {
+app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     // find the id and update from edit.ejs as a whole
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
