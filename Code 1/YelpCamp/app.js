@@ -118,6 +118,15 @@ app.post('./campgrounds/:id/reviews', validateReview, catchAsync(async (req, res
 
 }))
 
+// delete review
+app.delete('/campgrounds/:id/reviews/:reviewId'), catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(req.params.reviewId);
+    res.send("DELETE ME")
+    res.redirect(`/campgrounds/${id}`);
+})
+
 // app.all means every single request and * means for every path
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))

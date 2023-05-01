@@ -17,4 +17,16 @@ const CampgroundSchema = new Schema({
     ]
 });
 
+// delete a entire review 
+CampgroundSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await reviewSchema.deleteMany({
+            // _id: stands for review, is in document review
+            _id: {
+                $in: doc.reviews
+            }
+        })
+    }
+})
+
 module.exports = mongoose.model('Camground', CampgroundSchema);
