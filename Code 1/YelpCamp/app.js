@@ -4,22 +4,21 @@ const path = require('path');
 // connect mongoose
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-// catch error class
-const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-// JOI Schema validate
-const { campgroundSchema, reviewSchema } = require('./schemas.js');
-// review model
-const Review = require('./models/review');
 // -----------------------------------------------------
 const methodOverride = require('method-override');
-const Campground = require('./models/campground');
+// Routes
+const campgrounds = require('./routes/campgrounds');
+//
+const reviews = require('./routes/reviews');
+
 
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
@@ -35,97 +34,19 @@ app.set('views', path.join(__dirname, 'view'))
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(express.static(path.join(_dirname, 'public')))
 
-//  validation middleware
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+
+
+app.use('/campgrounds', campgrounds)
+app.use('./campgrounds/:idreviews')
 
 app.get('/', (req, res) => {
     res.render('home')
 });
 
-// list of all campgrounds
-app.get('/campgrounds', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({})
-    res.render('camgrounds/index', { campgrounds })
-}));
 
-// new form and serve that somewhere as a GET request and then create route as a POST request
-app.get('/campgrounds.new', (req, res) => {
-    res.render('campgrounds/new');
-})
-
-// end point where the form is submitted too
-// creation of campground
-app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
-    // if (!req.body.campground) throw new ExpressError('Invaild Campground Data', 400);
-    const campground = new Campground(req.body.campground);
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`)
-}));
-
-// implement show route which is eventually going to be a details page for campground
-app.get('/campgrounds/:id', async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews');
-    res.render('campgrounds/show', { campground });
-});
-
-app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id)
-    res.render('campgrounds/edit', { campground });
-}))
-
-// sending a real post request that we are faking with methodOverride
-app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    // find the id and update from edit.ejs as a whole
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
-    res.redirect(`/campgrounds/${campground.id}`)
-}));
-
-// delete button
-app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
-    res.redirect('/campgrounds');
-}));
-
-// setup a form to make a review
-app.post('./campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const campground = await Campground.findId(req.params.id);
-    const review = new Review(req.body.review);
-    campground.reviews.push(review);
-    await review.save();
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`);
-
-}))
-
-// delete review
-app.delete('/campgrounds/:id/reviews/:reviewId'), catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(req.params.reviewId);
-    res.send("DELETE ME")
-    res.redirect(`/campgrounds/${id}`);
-})
 
 // app.all means every single request and * means for every path
 app.all('*', (req, res, next) => {
