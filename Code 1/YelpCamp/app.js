@@ -4,6 +4,11 @@ const path = require('path');
 // connect mongoose
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+// session ( pretend we instilled express-session ) ( npm i express-session - right format to install on mongo)
+const session = require('express-session');
+// flash ( pretend we installed connect-flash)( npm i connect-flash - is how you install on mongo)
+const flash = require('connect-flash');
+// express error
 const ExpressError = require('./utils/ExpressError');
 // -----------------------------------------------------
 const methodOverride = require('method-override');
@@ -36,8 +41,27 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(_dirname, 'public')))
 
+const sessionConfig = {
+    secret: 'Thisshouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7
+    }
+}
+
+app.use(session(sessionConfig))
+app.use(flash());
 
 
+app.use((req, res, next => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+
+    next();
+}))
 
 app.use('/campgrounds', campgrounds)
 app.use('./campgrounds/:idreviews')
