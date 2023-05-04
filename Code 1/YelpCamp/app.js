@@ -10,8 +10,14 @@ const session = require('express-session');
 const flash = require('connect-flash');
 // express error
 const ExpressError = require('./utils/ExpressError');
+// passport ( pretend we installed passport) ( npm i passport passport-local passport-local-mongoose)
+// will have issues when installing this on mongoose>7
+// you have to runn npm install mongoose@"<7.0.0" and run npm i passport passport-local passport-local-mongoose again)
+
 // -----------------------------------------------------
 const methodOverride = require('method-override');
+
+
 // Routes
 const campgrounds = require('./routes/campgrounds');
 //
