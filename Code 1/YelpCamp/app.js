@@ -21,9 +21,9 @@ const methodOverride = require('method-override');
 
 
 // Routes
-const campgrounds = require('./routes/campgrounds');
-//
-const reviews = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+const campgroundsRoutes = require('./routes/campgrounds');
+const reviewsRoutes = require('./routes/reviews');
 
 
 
@@ -80,6 +80,8 @@ app.use((req, res, next => {
     next();
 }))
 
+
+
 // a route to create new user
 app.get('/fakeUser', async (req, res) => {
     const user = new user({ email: 'colt@gmail.com,', username: 'colt' })
@@ -88,8 +90,9 @@ app.get('/fakeUser', async (req, res) => {
     res.send(newUser);
 })
 
-app.use('/campgrounds', campgrounds)
-app.use('./campgrounds/:idreviews')
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundsRoutes)
+app.use('./campgrounds/:idreviews', reviewRoutes)
 
 app.get('/', (req, res) => {
     res.render('home')
