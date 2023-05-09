@@ -6,6 +6,9 @@ const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
 // JOI Schema validate
 const { campgroundSchema } = require('../schemas.js');
+const { isLoggedIn } = require('../middleware');
+// middleware
+const { IsLoggedIn } = require('../middleware');
 
 
 //  validation middleware
@@ -27,13 +30,13 @@ router.get('/', catchAsync(async (req, res) => {
 }));
 
 // new form and serve that somewhere as a GET request and then create route as a POST request
-router.get('/new', (req, res) => {
+router.get('/new', IsLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 })
 
 // end point where the form is submitted too
 // creation of campground
-router.post('/', validateCampground, catchAsync(async (req, res) => {
+router.post('/', IsLoggedIn, validateCampground, catchAsync(async (req, res) => {
     // if (!req.body.campground) throw new ExpressError('Invaild Campground Data', 400);
     const campground = new Campground(req.body.campground);
     await campground.save();
@@ -42,16 +45,16 @@ router.post('/', validateCampground, catchAsync(async (req, res) => {
 }));
 
 // implement show route which is eventually going to be a details page for campground
-router.get('/:id', async (req, res) => {
+router.get('/:id', catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate('reviews');
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('./campgrounds');
     }
     res.render('campgrounds/show', { campground });
-});
+}));
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', IsLoggedIn, catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id)
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
@@ -62,7 +65,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 
 
 // sending a real post request that we are faking with methodOverride
-router.put('/:id', validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', IsLoggedIn, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     // find the id and update from edit.ejs as a whole
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
@@ -71,7 +74,7 @@ router.put('/:id', validateCampground, catchAsync(async (req, res) => {
 }));
 
 // delete button
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', IsLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
