@@ -38,6 +38,7 @@ router.get('/new', IsLoggedIn, (req, res) => {
 // creation of campground
 router.post('/', IsLoggedIn, validateCampground, catchAsync(async (req, res) => {
     // if (!req.body.campground) throw new ExpressError('Invaild Campground Data', 400);
+    campground.author = req.user._id;
     const campground = new Campground(req.body.campground);
     await campground.save();
     req.flash('success', 'Successfully made a new campground');
@@ -46,7 +47,7 @@ router.post('/', IsLoggedIn, validateCampground, catchAsync(async (req, res) => 
 
 // implement show route which is eventually going to be a details page for campground
 router.get('/:id', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews');
+    const campground = await Campground.findById(req.params.id).populate('reviews').populate('author');
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('./campgrounds');
@@ -55,18 +56,29 @@ router.get('/:id', catchAsync(async (req, res) => {
 }));
 
 router.get('/:id/edit', IsLoggedIn, catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id)
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('./campgrounds');
+    }
+    if (!campground.author.equal(req.user._id)) {
+        req.flash('error', 'You do not have permission');
+        return res.redirect(`/campgrounds/${id}`);
     }
     res.render('campgrounds/edit', { campground });
 }))
 
 
+
 // sending a real post request that we are faking with methodOverride
 router.put('/:id', IsLoggedIn, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
+    const campground = await Campground.findById(id);
+    if (!campground.author.equal(req.user._id)) {
+        req.flash('error', 'You do not have permission');
+        return res.redirect(`/campgrounds/${campground._id}`)
+    }
     // find the id and update from edit.ejs as a whole
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     req.flash('success', 'Successfully updatescampground!')
@@ -76,6 +88,12 @@ router.put('/:id', IsLoggedIn, validateCampground, catchAsync(async (req, res) =
 // delete button
 router.delete('/:id', IsLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
+    const campground = await Campground.findById(id);
+    if (!campground.author.equal(req.user._id)) {
+        req.flash('error', 'You do not have permission');
+        return res.redirect(`/campgrounds/${campground._id}`)
+    }
+
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 }));
