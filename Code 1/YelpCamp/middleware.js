@@ -12,6 +12,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 }
 
+// validate middleware
 module.exports.validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body);
     console.log(req.body);
@@ -23,6 +24,10 @@ module.exports.validateCampground = (req, res, next) => {
     }
 }
 
+// we take ID from the URL
+// look up the campground with that ID
+// look up to see if the user's ID who's logged in right now equals the campgrounds author ID.
+// if not, flask this message error 'you do not have permission'
 module.exports.isAuthor = async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
@@ -59,6 +64,9 @@ module.exports.checkReturnTo = (req, res, next) => {
     }
     next();
 }
+
+
+
 
 // PREVOUIS CODE ---------------------------------------------- DUE TO OUTDATED PASSPORT VERSION
 

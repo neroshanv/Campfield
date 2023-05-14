@@ -5,22 +5,14 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
 // JOI Schema validate
-const { campgroundSchema } = require('../schemas.js');
-const { isLoggedIn } = require('../middleware');
-// middleware
-const { IsLoggedIn } = require('../middleware');
+
+//middleware
+const { isLoggedIn, IsAuthor, validateCampground } = require('../middleware');
 
 
-//  validation middleware
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+
+const Campground = require('../models/campground');
+
 
 
 // list of all campgrounds
@@ -47,7 +39,13 @@ router.post('/', IsLoggedIn, validateCampground, catchAsync(async (req, res) => 
 
 // implement show route which is eventually going to be a details page for campground
 router.get('/:id', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews').populate('author');
+    const campground = await Campground.findById(req.params.id).populate({
+        // shows every author on every review
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author');
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('./campgrounds');
@@ -55,16 +53,12 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('campgrounds/show', { campground });
 }));
 
-router.get('/:id/edit', IsLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id/edit', IsLoggedIn, IsAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('./campgrounds');
-    }
-    if (!campground.author.equal(req.user._id)) {
-        req.flash('error', 'You do not have permission');
-        return res.redirect(`/campgrounds/${id}`);
     }
     res.render('campgrounds/edit', { campground });
 }))
@@ -72,13 +66,9 @@ router.get('/:id/edit', IsLoggedIn, catchAsync(async (req, res) => {
 
 
 // sending a real post request that we are faking with methodOverride
-router.put('/:id', IsLoggedIn, validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', IsLoggedIn, IsAuthor, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const campground = await Campground.findById(id);
-    if (!campground.author.equal(req.user._id)) {
-        req.flash('error', 'You do not have permission');
-        return res.redirect(`/campgrounds/${campground._id}`)
-    }
+
     // find the id and update from edit.ejs as a whole
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     req.flash('success', 'Successfully updatescampground!')
@@ -86,14 +76,13 @@ router.put('/:id', IsLoggedIn, validateCampground, catchAsync(async (req, res) =
 }));
 
 // delete button
-router.delete('/:id', IsLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', IsLoggedIn, IsAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground.author.equal(req.user._id)) {
         req.flash('error', 'You do not have permission');
         return res.redirect(`/campgrounds/${campground._id}`)
     }
-
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 }));
