@@ -23,7 +23,7 @@ router.route('/:id')
     // implement show route which is eventually going to be a details page for campground
     .get('/:id', catchAsync(campgrounds.showCampground))
     // sending a real post request that we are faking with methodOverride
-    .put('/:id', IsLoggedIn, IsAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
+    .put('/:id', IsLoggedIn, IsAuthor, upload.array('image'), validateCampground, catchAsync(campgrounds.updateCampground))
     // delete button
     .delete('/:id', IsLoggedIn, IsAuthor, catchAsync(campgrounds.deleteCampgrounds));
 
