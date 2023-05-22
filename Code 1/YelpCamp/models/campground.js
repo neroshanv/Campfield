@@ -3,6 +3,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Storing image in mongo
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+ImageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/uploade/w_200');
+})
+
 const CampgroundSchema = new Schema({
     title: String,
     image: String,
