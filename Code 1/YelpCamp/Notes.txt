@@ -12,6 +12,11 @@ use yelp-camp
 npm i method-override
 
 
+in node:
+
+installing mapbox
+
+npm install @mapbox/mapbox-sdk
 ----------------------------------------------------------------
 
 UPDATE:
