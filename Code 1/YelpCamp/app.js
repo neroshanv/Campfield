@@ -34,6 +34,12 @@ const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 
 
+// -------------------------------------------------------
+
+// Connecting to Mongo DB Atlas
+// const dbUrl = process.env.DB_URL
+
+
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
