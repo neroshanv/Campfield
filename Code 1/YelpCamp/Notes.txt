@@ -17,6 +17,20 @@ in node:
 installing mapbox
 
 npm install @mapbox/mapbox-sdk
+
+
+in node:
+
+npm install connect-mongo@latest
+
+in package.json:
+
+it should look like this-
+
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+}
 ----------------------------------------------------------------
 
 UPDATE:

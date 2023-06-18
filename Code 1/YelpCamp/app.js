@@ -33,6 +33,26 @@ const userRoutes = require('./routes/users');
 const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 
+// -------------------------------------------------------
+
+const MongoDBStore = require("connect-mongo")(session);
+// -------------------------------------------------------
+
+// Connecting to Mongo DB Atlas
+// const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+
+// mongoose.connect(dbUrl, {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false
+// });
+
+//const db = mongoose.connection;
+// db.on("error", console.error.bind(console, "connection error:"));
+// db.once("open", () => {
+//     console.log("Database connected");
+// });
 
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
@@ -59,15 +79,23 @@ app.use(express.static(path.join(_dirname, 'public')))
 app.use(mongoSanitize({
     replaceWith: '_'
 }))
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 const sessionConfig = {
-    secret: 'Thisshouldbeabettersecret',
+    store,
+    name: 'session',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
 
@@ -165,7 +193,11 @@ app.use((err, req, res, next) => {
 
 })
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
-});
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`)
+}),
+    app.listen(3000, () => {
+        console.log('Serving on port 3000')
+    });
 
