@@ -4,10 +4,13 @@ import ListPicker from "./ListPicker";
 import Heading from "./Heading";
 import DoubleDice from "./DoubleDice";
 import ColorList from "./ColorList";
+import Colorbox from "./ColorBox";
 
 import Slots from "./Slots";
 import "./app.css";
 import Property from "./Property";
+import ColorBox from "./ColorBox";
+import ColorBoxGrid from "./ColorBoxGrid";
 
 const properties = [
   { id: 129031, name: "Desert Yurt", rating: 4.9, price: 150 },
@@ -18,14 +21,34 @@ const properties = [
   { id: 129035, name: "Gold Miner Campground", rating: 4.69, price: 96 },
 ];
 
+const colors = [
+  "#E53935",
+  "#E91E63",
+  "#9C27B0",
+  "#673AB7",
+  "#3F51B5",
+  "#2196F3",
+  "#03A9F4",
+  "#00BCD4",
+  "#009688",
+  "#4CAF50",
+  "#8BC34A",
+  "#CDDC39",
+  "#FFEB3B",
+  "#FFC107",
+  "#FF9800",
+  "#FF5722",
+];
+
 
 function App() {
   return (
     <div>
+      <ColorBoxGrid colors={colors} />
       {/*<Heading color="magenta" text="Welcome!" />
       <DoubleDice />
       <DoubleDice />
-  <DoubleDice />*/}
+      <DoubleDice />*/}
 
       {/*<ColorList colors={["red", "pink", "purple", "teal"]} />*/}
       {/*<Greeter person="Bill" from="Nero" />*/}
