@@ -1,0 +1,8 @@
+Game Plan
+
+Set of components for:
+- play a dice game with (numDice) number of dice
+- shows a win message when total equals (goal)
+- a "roll again" button that re-rolls all the dice
+
+  
