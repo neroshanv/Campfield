@@ -5,4 +5,15 @@ Set of components for:
 - shows a win message when total equals (goal)
 - a "roll again" button that re-rolls all the dice
 
-  
+
+652.
+Passing a function as a prop
+- in JS, functions are first-class objects - you can pass them around
+- we can pass a winCheck(dice) function to our LuckyN game
+
+how data flows
+- a parent component defines a function
+- the function is passed as a prop to a child component
+- the child component invokes the prop function
+- the parent function is called, usually setting new state
+- the parent component is re-rendered along with it's children
