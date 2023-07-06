@@ -1,0 +1,14 @@
+Forms:
+
+- one source of truth:
+
+we make React state be the "single source of truth"
+
+React Controls:
+- what is shown( the value of the component)
+- what happens when user types (this gets kept in state)
+
+input elements controlled in this way are called controlled component
+
+
+keeps it's own state, not react state

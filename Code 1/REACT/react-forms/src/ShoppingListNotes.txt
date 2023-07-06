@@ -1,0 +1,16 @@
+
+
+
+We have our parent component that in this case manages a list of elements, a list of objects, and
+
+we write a function to add a new object in a new item into our shopping list.
+
+We pass down add item as whatever you want to call it as a prop to our form in the form.
+
+When that form is submitted, we execute add item that takes the form data, sends it on up to this
+
+function up here that updates the state in the parent, the state's updated.
+
+We then see the new element show up here.
+
+Okay so one tweak we could make that's really common is to empty out the form after you submit it,
