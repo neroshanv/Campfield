@@ -1,0 +1,39 @@
+Rendering and State:
+
+- a state setter function is called 
+- your codes finishes running
+- the component re-renders
+- in this re-render, state will be set to the new value
+
+- these are things we would call - side effects or effects
+
+Rendering and Effects:
+
+- this is what effects are for- doing after a render
+
+this is useful for different kinds of things:
+
+- changing parts of the DOM not covered by REACT
+- async opertions, like AJAX requests WHEN A COMPONENT IS MOUNTED
+- doing things when a component is about to be unmounted
+
+Effects are used for "side effects": doing things unrelated to render
+
+
+
+2nd Argument to useEffect
+
+- useEffect(myCallbackFn);
+    - runs MyCallbackFn effect after every render
+
+- useEffect(myCallbackFn, [productId, userId])
+    - runs only if productid or userid vars changed
+
+- useEffect(mycallbackFn, [])
+    - runs only the first time (on mount)
+
+
+Fetching Data on Initial Render
+
+- most common way to use it is to load initial data from API
+- Get information from an API so they have something to render but we only want to do that once
