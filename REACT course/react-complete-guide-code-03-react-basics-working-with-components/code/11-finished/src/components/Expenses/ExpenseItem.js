@@ -1,3 +1,4 @@
+{/* import a function that allows value as state, where changes in the value should reflect in the component functino recalled again */ }
 import React, { useState } from 'react';
 
 import ExpenseDate from './ExpenseDate';
@@ -16,6 +17,7 @@ const ExpenseItem = (props) => {
 
   {/* function clickHandler() */ }
   const clickHandler = () => {
+    {/* calling this function is an special variable, it will receive a new value and will execute the entire component again */ }
     setTitle = 'Updated';
   };
 
