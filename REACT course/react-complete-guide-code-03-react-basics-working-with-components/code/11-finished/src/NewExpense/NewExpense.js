@@ -4,10 +4,20 @@ import './NewExpense.css';
 
 
 const NewExpense = () => {
+
+    const saveExpenseDataHandler = (enteredExpenseData) => {
+        const expenseData = {
+            ...enteredExpenseData,
+            id: Math.random().toString()
+        };
+    }
     return <div className='new-expense'>
-        <ExpenseForm />
+        <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
     </div>
 };
 
 
 export default NewExpense;
+
+{/* everytime a new expense been added to the form, NewExpense runs from ExpenseForm "Props.onSaveExpenseData(expenseData);" */ }
+{/* works up from child to parent */ }
