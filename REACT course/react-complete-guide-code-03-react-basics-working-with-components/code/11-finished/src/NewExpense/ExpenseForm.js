@@ -29,7 +29,7 @@ const ExpenseForm = () => {
             date: new Date(enteredDate)
         };
 
-        PaymentResponse.onSaveExpenseData();
+        Props.onSaveExpenseData(expenseData);
         setEnteredTitle('');
         setEnteredAmount('');
         setEnteredDate('');
