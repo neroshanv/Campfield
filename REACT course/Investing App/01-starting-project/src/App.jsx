@@ -12,6 +12,9 @@ function App() {
     duration: 10
   });
 
+  // if this condition is not met, inputIsValid will be false.
+  const inputIsValid = userInput.duration >= 1;
+
   // function that should trigger whenever we change the value in these output fields "Initial Investment, Annual Investment, Expected return, Duration"
   // Goal: one generic function that can be connected to all inputs
 
@@ -21,16 +24,20 @@ function App() {
     setUserInput(prevUserInput => {
       return {
         ...preUserInput,
-        [inputIdentifier]: newValue,
+        // adding a + will force a conversion of this string to number value
+        [inputIdentifier]: +newValue,
       };
     });
   }
+
+
 
   return (
     <>
       <Header />
       <UserInput userInput={userInput} onChange={handleChange} />
-      <Results input={userInput} />
+      {!inputIsValid && <p className="center">Please enter a duration greater than zero.</p>}
+      {inputIsValid && <Results input={userInput} />}
     </>
   );
 }
