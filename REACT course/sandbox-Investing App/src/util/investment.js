@@ -10,13 +10,12 @@ export function calculateInvestmentResults({
   expectedReturn,
   duration,
 }, results) {
-  const annualData = [];
   let investmentValue = initialInvestment;
 
   for (let i = 0; i < duration; i++) {
     const interestEarnedInYear = investmentValue * (expectedReturn / 100);
     investmentValue += interestEarnedInYear + annualInvestment;
-    annualData.push({
+    results.push({
       year: i + 1, // year identifier
       interest: interestEarnedInYear, // the amount of interest earned in this year
       valueEndOfYear: investmentValue, // investment value at end of year
@@ -24,8 +23,6 @@ export function calculateInvestmentResults({
     });
   }
 }
-// return annualData;
-// }
 
 // The browser-provided Intl API is used to prepare a formatter object
 // This object offers a "format()" method that can be used to format numbers as currency

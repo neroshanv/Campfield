@@ -41,5 +41,5 @@ export default function UserInput({ onChange, userInput }) {
                 </p>
             </div>
         </section>
-    )
+    );
 }
