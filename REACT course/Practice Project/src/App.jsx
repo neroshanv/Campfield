@@ -10,8 +10,36 @@ function App() {
     // undefined means we are doing nothing
     selectedProjectId: undefined,
     // new projects created here
-    projects: []
+    projects: [],
+    tasks: [],
   });
+
+  function handleAddTask(text) {
+    setProjectsState((prevState) => {
+      const taskId = Math.random();
+      const newTask = {
+        text: text,
+        projectId: prevState.selectedProjectId,
+        id: taskId,
+      };
+
+      return {
+        ...prevState,
+        tasks: [newTask, ...prevState.tasks]
+      };
+    });
+  }
+
+  function handleDeleteTask(id) {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        tasks: prevState.tasks.filter(
+          (task) => task.id !== prevState.selectedProjectId
+        ),
+      };
+    });
+  }
 
   function handleSelectProject(id) {
     setProjectsState(prevState => {
@@ -86,7 +114,17 @@ function App() {
   // JS code you can use to finding an element in an array by id
   const selectedProject = projectsState.projects.find(project => project.id === projectsState.selectedProjectId);
 
-  let content = <SelectedProject project={selectedProject} onDelete={handleDelectProject} />
+  let content = (
+    <SelectedProject
+      project={selectedProject}
+      onDelete={handleDelectProject}
+      onAddTask={handleAddTask}
+      onDeleteTask={handleDeleteTask}
+      selectedProjectId={projectsState.selectedProjectId}
+    />
+  );
+
+
   // we want to add a new project
   if (projectsState.selectedProjectId === null) {
     content = (
