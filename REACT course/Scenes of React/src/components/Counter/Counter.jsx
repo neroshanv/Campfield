@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 
 import IconButton from '../UI/IconButton.jsx';
 import MinusIcon from '../UI/Icons/MinusIcon.jsx';
@@ -29,17 +29,40 @@ function isPrime(number) {
 
 export default function Counter({ initialCount }) {
   log('<Counter /> rendered', 1);
-  const initialCountIsPrime = isPrime(initialCount);
+  //                                    IsPrime only gets re-executed if initial count changed.
+  const initialCountIsPrime = useMemo(() => isPrime(initialCount), [initialCount]);
 
-  const [counter, setCounter] = useState(initialCount);
+  // reset setCounterChange array
+  // -------------------------------
+  //useEffect(() => {
+  //  setCounterChanges([{ value: initialCount, id: Math.random() * 1000 }]);
+  // }, [initialCount]);
 
-  function handleDecrement() {
-    setCounter((prevCounter) => prevCounter - 1);
-  }
+  // const [counter, setCounter] = useState(initialCount);
+  const [counterChanges, setCounterChanges] = useState([
+    { value: initialCount, id: Math.random() * 1000 },
+  ]);
 
-  function handleIncrement() {
-    setCounter((prevCounter) => prevCounter + 1);
-  }
+  const currentCounter = counterChanges.reduce(
+    (prevCounter, counterChange) => prevCounter + counterChange.value,
+    0
+  );
+
+  const handleDecrement = useCallback(function handleDecrement() {
+    // setCounter((prevCounter) => prevCounter - 1);
+    setCounterChanges((prevCounterChanges) => [
+      { value: -1, id: Math.random() * 1000 },
+      ...prevCounterChanges,
+    ]);
+  }, []);
+
+  const handleIncrement = useCallback(function handleIncrement() {
+    // setCounter((prevCounter) => prevCounter + 1);
+    setCounterChanges((prevCounterChanges) => [
+      { value: -1, id: Math.random() * 1000 },
+      ...prevCounterChanges,
+    ]);
+  }, []);
 
   return (
     <section className="counter">
