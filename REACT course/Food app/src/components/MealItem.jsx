@@ -1,9 +1,9 @@
 // Goal: output a bunch of meal items, bascailly one meal item per loaded meal.
 
 import { useContext } from "react";
-import { currencyFormatter } from "../util/formatting.jsx"
-import Button from "./UI/button.jsx";
-import CartContext from "../store/CartContext.jsx";
+import { currencyFormatter } from "../../util/formatting.js"
+import Button from "./button.jsx";
+import CartContext from "../../store/CartContext.jsx";
 
 export default function MealItem(meal) {
     const cartCtx = useContext(CartContext);
