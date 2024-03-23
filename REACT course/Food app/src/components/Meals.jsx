@@ -12,13 +12,15 @@ export default function Meals() {
     }
 
     if (error) {
-        return <Error title='Failed to fetch meals' message={error}
+        return <Error title='Failed to fetch meals' message={error}>
+        </Error>
     }
 
-    return (<ul id="meals">
-        {loadedMeals.map((meal) => (
-            <MealItem key={meal.id} meal={meal} />
-        ))}
-    </ul>
+    return (
+        <ul id="meals">
+            {loadedMeals.map((meal) => (
+                <MealItem key={meal.id} meal={meal} />
+            ))}
+        </ul>
     )
 }
