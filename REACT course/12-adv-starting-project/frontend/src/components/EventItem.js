@@ -1,8 +1,20 @@
+import { Link, useSubmit } from 'react-router-dom';
+
 import classes from './EventItem.module.css';
 
 function EventItem({ event }) {
+  const submit = useSubmit();
+
+
   function startDeleteHandler() {
-    // ...
+    const proceed = window.confirm('Are you sure?');
+
+    if (proceed) {
+      // we can submit two passing arguments
+      // 1, {} or null - data we want to submit
+      // 2, what action we want it to do
+      submit(null, { method: 'delete' })
+    }
   }
 
   return (
