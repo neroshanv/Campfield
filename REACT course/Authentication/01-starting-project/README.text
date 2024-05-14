@@ -1,0 +1,1 @@
+1 - auth.js in util folder may need to be placed under src or different folder for it the app to work.
