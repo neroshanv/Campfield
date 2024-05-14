@@ -41,6 +41,7 @@ function MainNavigation() {
               Newsletter
             </NavLink>
           </li>
+          {/* only show login if we are not logged in */}
           {!token && (
             <li>
               <NavLink
@@ -53,6 +54,7 @@ function MainNavigation() {
               </NavLink>
             </li>
           )}
+          {/* only show logout button if we are logged in */}
           {token && (
             <li>
               <Form action="/logout" method="post">
