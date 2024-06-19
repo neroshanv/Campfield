@@ -6,6 +6,11 @@ import { getMeals } from '@/lib/meals';
 // handle loading state 
 import { Suspense } from 'react';
 
+export const metadata = {
+    title: 'All Meals',
+    description: 'Browse the delicious meals',
+};
+
 function Meals() {
     const meals = getMeals();
 
